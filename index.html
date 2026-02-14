@@ -55,14 +55,20 @@ letter-spacing:2px;
 #main-site{
 display:none;
 text-align:center;
-padding:100px 20px 50px 20px;
+padding-top:100px;
 min-height:100vh;
 background:linear-gradient(to bottom,#000,#1a0000);
 }
 
 h1{
-font-size:2rem;
+font-size:2.5rem;
 text-shadow:0 0 15px #ff0000;
+}
+
+p{
+font-size:1.4rem;
+color:#ff69b4;
+margin:20px;
 }
 
 .btn-container{
@@ -70,14 +76,14 @@ margin-top:50px;
 display:flex;
 justify-content:center;
 gap:30px;
-flex-wrap:wrap;
-min-height:150px;
+min-height:200px;
 align-items:center;
+flex-wrap:wrap;
 }
 
 .btn{
 padding:15px 35px;
-font-size:1.3rem;
+font-size:1.5rem;
 border:2px solid #ff0000;
 background:transparent;
 color:white;
@@ -97,7 +103,7 @@ color:#ff69b4;
 min-height:40px;
 }
 
-/* HEART YAĞMURU */
+/* Kalp yağmuru */
 .heart{
 position:fixed;
 font-size:1.5rem;
@@ -110,7 +116,7 @@ animation:fall 4s linear forwards;
 100%{transform:translateY(110vh);opacity:0;}
 }
 
-/* BÜYÜK KALP */
+/* Büyük kalp */
 #big-heart{
 position:fixed;
 inset:0;
@@ -140,9 +146,15 @@ animation:bigHeartAnim 1.2s ease-out forwards;
 
 <div id="main-site">
 
-<!-- 1. SORU -->
+<!-- 1. KISIM -->
 <div id="question1">
-<h1>Benimle olur musun? 🖤</h1>
+<h1>bugün 14 subat olması biseyi degistirmiyor ama</h1>
+
+<p>
+meeee (nerd, normalbooooy) ve my altttgothiiiiiiccccc (thebestttt) için... <br>
++ normal boy gothiiiiicalt girl
+</p>
+
 <div class="btn-container">
 <button class="btn btn-yes" id="yes1">Evet</button>
 <button class="btn" id="no1">Hayır</button>
@@ -152,6 +164,7 @@ animation:bigHeartAnim 1.2s ease-out forwards;
 <!-- 2. SORU -->
 <div id="question2" style="display:none;">
 <h1 id="typing-text"></h1>
+
 <div class="btn-container" id="second-buttons" style="display:none;">
 <button class="btn btn-yes" id="yes2">Yes</button>
 <button class="btn" id="no2">No</button>
@@ -183,7 +196,6 @@ function unlock(){
 if(passInput.value.trim()==="konyalim09"){
 loginScreen.style.display="none";
 mainSite.style.display="block";
-document.body.style.overflow="auto";
 }else{
 alert("Yanlış Şifre!");
 passInput.value="";
@@ -195,16 +207,15 @@ passInput.addEventListener("keypress",e=>{
 if(e.key==="Enter") unlock();
 });
 
-/* YAZI ANİMASYONU */
+/* Yazı animasyonu */
 function typeWriter(element,text,callback){
 let i=0;
 element.innerHTML="";
-let speed=60;
 function typing(){
 if(i<text.length){
 element.innerHTML+=text.charAt(i);
 i++;
-setTimeout(typing,speed);
+setTimeout(typing,60);
 }else{
 if(callback) callback();
 }
@@ -216,7 +227,7 @@ typing();
 yes1.addEventListener("click",()=>{
 q1.style.display="none";
 q2.style.display="block";
-typeWriter(typingText,"Do you liked me? 🖤",()=>{
+typeWriter(typingText,"do you liked me ?",()=>{
 secondButtons.style.display="flex";
 });
 });
@@ -242,7 +253,7 @@ btn.style.top=y+"px";
 no1.addEventListener("click",()=>moveButton(no1));
 no2.addEventListener("click",()=>moveButton(no2));
 
-/* KALP YAĞMURU */
+/* Kalp yağmuru */
 function spawnHearts(){
 for(let i=0;i<25;i++){
 const h=document.createElement("div");
@@ -254,7 +265,7 @@ setTimeout(()=>h.remove(),4000);
 }
 }
 
-/* BÜYÜK KALP */
+/* Büyük kalp */
 function showBigHeart(){
 const big=document.createElement("div");
 big.id="big-heart";
