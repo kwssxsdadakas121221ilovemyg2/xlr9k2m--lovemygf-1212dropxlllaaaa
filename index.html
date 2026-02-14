@@ -17,7 +17,43 @@ color:#ff0000;
 overflow-x:hidden;
 }
 
+/* LOGIN */
+#login-screen{
+position:fixed;
+inset:0;
+background:#000;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+z-index:99999;
+}
+
+#login-screen input{
+padding:15px;
+font-size:1.2rem;
+background:#111;
+border:2px solid #8b0000;
+color:white;
+text-align:center;
+outline:none;
+width:250px;
+margin-bottom:20px;
+}
+
+#login-screen button{
+padding:10px 40px;
+background:#8b0000;
+color:white;
+border:none;
+cursor:pointer;
+font-weight:bold;
+letter-spacing:2px;
+}
+
+/* MAIN */
 #main-site{
+display:none;
 text-align:center;
 padding:100px 20px 50px 20px;
 min-height:100vh;
@@ -35,6 +71,8 @@ display:flex;
 justify-content:center;
 gap:30px;
 flex-wrap:wrap;
+min-height:150px;
+align-items:center;
 }
 
 .btn{
@@ -59,7 +97,7 @@ color:#ff69b4;
 min-height:40px;
 }
 
-/* HEART */
+/* HEART YAĞMURU */
 .heart{
 position:fixed;
 font-size:1.5rem;
@@ -71,9 +109,34 @@ animation:fall 4s linear forwards;
 0%{transform:translateY(-10vh);opacity:1;}
 100%{transform:translateY(110vh);opacity:0;}
 }
+
+/* BÜYÜK KALP */
+#big-heart{
+position:fixed;
+inset:0;
+display:flex;
+justify-content:center;
+align-items:center;
+font-size:0rem;
+z-index:9999;
+pointer-events:none;
+animation:bigHeartAnim 1.2s ease-out forwards;
+}
+
+@keyframes bigHeartAnim{
+0%{font-size:0rem; opacity:0; transform:scale(0);}
+60%{font-size:12rem; opacity:1; transform:scale(1.2);}
+100%{font-size:10rem; opacity:1; transform:scale(1);}
+}
 </style>
 </head>
 <body>
+
+<div id="login-screen">
+<h2 style="margin-bottom:30px;letter-spacing:5px;">ERİŞİM KISITLI</h2>
+<input type="password" id="passInput" placeholder="Şifreyi Gir...">
+<button id="loginBtn">GİRİŞ YAP</button>
+</div>
 
 <div id="main-site">
 
@@ -100,6 +163,11 @@ animation:fall 4s linear forwards;
 </div>
 
 <script>
+const loginScreen=document.getElementById('login-screen');
+const mainSite=document.getElementById('main-site');
+const passInput=document.getElementById('passInput');
+const loginBtn=document.getElementById('loginBtn');
+
 const q1=document.getElementById("question1");
 const q2=document.getElementById("question2");
 const yes1=document.getElementById("yes1");
@@ -110,14 +178,31 @@ const typingText=document.getElementById("typing-text");
 const secondButtons=document.getElementById("second-buttons");
 const result=document.getElementById("result");
 
+/* LOGIN */
+function unlock(){
+if(passInput.value.trim()==="konyalim09"){
+loginScreen.style.display="none";
+mainSite.style.display="block";
+document.body.style.overflow="auto";
+}else{
+alert("Yanlış Şifre!");
+passInput.value="";
+}
+}
+
+loginBtn.addEventListener("click",unlock);
+passInput.addEventListener("keypress",e=>{
+if(e.key==="Enter") unlock();
+});
+
 /* YAZI ANİMASYONU */
-function typeWriter(text,callback){
+function typeWriter(element,text,callback){
 let i=0;
-typingText.innerHTML="";
+element.innerHTML="";
 let speed=60;
 function typing(){
 if(i<text.length){
-typingText.innerHTML+=text.charAt(i);
+element.innerHTML+=text.charAt(i);
 i++;
 setTimeout(typing,speed);
 }else{
@@ -131,16 +216,17 @@ typing();
 yes1.addEventListener("click",()=>{
 q1.style.display="none";
 q2.style.display="block";
-typeWriter("Do you like me? 🖤",()=>{
+typeWriter(typingText,"Do you liked me? 🖤",()=>{
 secondButtons.style.display="flex";
 });
 });
 
 /* 2. EVET */
 yes2.addEventListener("click",()=>{
-result.innerHTML="";
-typeWriter("I knew ittt ❤️",()=>{
+secondButtons.style.display="none";
+typeWriter(result,"I knew ittt ❤️",()=>{
 spawnHearts();
+showBigHeart();
 });
 });
 
@@ -166,6 +252,15 @@ h.innerText=["❤️","💖","🖤","💕"][Math.floor(Math.random()*4)];
 document.body.appendChild(h);
 setTimeout(()=>h.remove(),4000);
 }
+}
+
+/* BÜYÜK KALP */
+function showBigHeart(){
+const big=document.createElement("div");
+big.id="big-heart";
+big.innerHTML="❤️";
+document.body.appendChild(big);
+setTimeout(()=>big.remove(),1500);
 }
 </script>
 
