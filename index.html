@@ -3,287 +3,217 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sana Özel | 14 Şubat</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
+    <title>Sana Özel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --primary-red: #8b0000;
-            --accent-pink: #ff69b4;
-            --dark-bg: #0a0a0a;
-        }
-
-        body {
+        /* TEMEL AYARLAR */
+        body, html {
             margin: 0;
             padding: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
             font-family: 'Cinzel', serif;
-            background-color: var(--dark-bg);
-            color: white;
-            overflow-x: hidden;
-            min-height: 100vh;
+            color: #ff0000;
+            overflow: hidden;
         }
 
-        /* Giriş Ekranı */
-        #login-overlay {
+        /* 1. SİYAH ŞİFRE EKRANI (TAM EKRAN) */
+        #login-screen {
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
-            background: radial-gradient(circle, #1a0000 0%, #000 100%);
+            background: #000;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            z-index: 10000;
-            transition: opacity 0.8s ease;
+            z-index: 9999;
         }
 
-        .login-box {
-            padding: 40px;
-            border: 1px solid var(--primary-red);
-            background: rgba(0,0,0,0.8);
-            box-shadow: 0 0 20px rgba(139, 0, 0, 0.5);
-            text-align: center;
-            border-radius: 5px;
-        }
-
-        #login-overlay input {
-            padding: 12px;
-            font-family: 'Cinzel', serif;
+        #login-screen input {
+            padding: 15px;
+            font-size: 1.2rem;
             background: #111;
-            border: 1px solid #444;
+            border: 2px solid #8b0000;
             color: white;
-            margin-bottom: 20px;
-            width: 200px;
+            text-align: center;
             outline: none;
-            transition: border 0.3s;
+            width: 250px;
+            margin-bottom: 20px;
         }
 
-        #login-overlay input:focus { border-color: var(--primary-red); }
-
-        #login-overlay button {
-            padding: 10px 30px;
-            background: var(--primary-red);
+        #login-screen button {
+            padding: 10px 40px;
+            background: #8b0000;
             color: white;
             border: none;
             cursor: pointer;
+            font-weight: bold;
             letter-spacing: 2px;
-            transition: 0.3s;
         }
 
-        #login-overlay button:hover { background: #ff0000; box-shadow: 0 0 15px #ff0000; }
-
-        /* Ana İçerik */
-        #main-content {
-            display: none; /* Başlangıçta gizli */
-            opacity: 0;
-            transition: opacity 1s ease-in;
-            padding: 50px 20px;
+        /* 2. ANA İÇERİK (BAŞLANGIÇTA GİZLİ) */
+        #main-site {
+            display: none; 
             text-align: center;
-            background: linear-gradient(to bottom, #000000, #1a0a0a, #2b0000);
+            padding-top: 100px;
             min-height: 100vh;
+            background: linear-gradient(to bottom, #000, #1a0000);
         }
 
-        h1 { 
-            font-size: 2.8rem; 
-            text-shadow: 2px 2px 10px var(--primary-red); 
-            margin-bottom: 30px;
-            color: #eee;
-        }
+        h1 { font-size: 2.5rem; text-shadow: 0 0 15px #ff0000; }
+        p { font-size: 1.4rem; color: #ff69b4; margin: 20px; }
 
-        .sub-text {
-            font-family: 'Dancing Script', cursive;
-            font-size: 1.8rem;
-            color: var(--accent-pink);
-            margin-bottom: 50px;
-        }
-
-        .question-box {
-            background: rgba(255, 255, 255, 0.03);
-            padding: 40px;
-            border-radius: 15px;
-            display: inline-block;
-            border: 1px border: 1px solid rgba(139, 0, 0, 0.3);
-        }
-
-        .question { font-size: 1.8rem; margin-bottom: 30px; }
-
-        .buttons { 
-            display: flex; 
-            justify-content: center; 
-            gap: 30px; 
+        .btn-container {
+            margin-top: 50px;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            min-height: 200px;
             align-items: center;
-            min-height: 150px;
         }
 
         .btn {
-            font-family: 'Cinzel', serif;
-            font-size: 1.2rem;
-            padding: 12px 30px;
-            border: 2px solid var(--primary-red);
+            padding: 15px 35px;
+            font-size: 1.5rem;
+            border: 2px solid #ff0000;
             background: transparent;
             color: white;
             cursor: pointer;
-            transition: all 0.3s;
-            border-radius: 4px;
-            position: relative;
+            border-radius: 10px;
+            transition: 0.3s;
         }
 
-        .btn-yes:hover {
-            background: var(--primary-red);
-            box-shadow: 0 0 20px var(--primary-red);
-        }
+        .btn-yes { background: #8b0000; }
 
-        #alt-mesaj { 
-            margin-top: 40px; 
-            font-family: 'Dancing Script', cursive; 
-            font-size: 1.5rem; 
-            color: #888;
-        }
-
-        .heart { 
-            position: fixed; 
-            font-size: 1.5rem; 
-            animation: floatUp 4s linear forwards; 
-            z-index: 99; 
+        /* KALPLER */
+        .heart {
+            position: fixed;
+            font-size: 1.5rem;
             pointer-events: none;
+            animation: moveUp 4s linear forwards;
+            z-index: 1000;
         }
 
-        @keyframes floatUp {
-            0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        @keyframes moveUp {
+            0% { transform: translateY(100vh); opacity: 1; }
+            100% { transform: translateY(-10vh); opacity: 0; }
         }
 
-        /* Müzik Kontrol */
-        .music-player {
+        /* MÜZİK BUTONU */
+        #music-control {
             position: fixed;
             bottom: 20px;
             right: 20px;
-            background: rgba(0,0,0,0.7);
-            padding: 10px;
-            border-radius: 50%;
-            border: 1px solid var(--primary-red);
             cursor: pointer;
+            font-size: 2rem;
             z-index: 1001;
         }
+
+        /* YOUTUBE OYNATICIYI TAMAMEN GİZLE */
+        #player { display: none; visibility: hidden; width: 0; height: 0; }
     </style>
 </head>
 <body>
 
-<div id="login-overlay">
-    <div class="login-box">
-        <h2 style="letter-spacing: 3px; margin-bottom: 25px;">GİRİŞ İZNİ GEREKLİ</h2>
-        <input type="password" id="password-input" placeholder="Anahtar Kelime...">
-        <br>
-        <button onclick="checkPassword()">AÇ</button>
-    </div>
+<div id="login-screen">
+    <h2 style="margin-bottom: 30px; letter-spacing: 5px;">ERİŞİM KISITLI</h2>
+    <input type="password" id="passInput" placeholder="Şifreyi Gir...">
+    <button onclick="unlock()">GİRİŞ YAP</button>
 </div>
 
-<div id="main-content">
+<div id="main-site">
     <h1>bugün 14 subat olması biseyi degistirmiyor ama</h1>
-    <p class="sub-text">meeee (nerd, normalbooooy) ve my altttgothiiiiiiccccc (thebestttt) için...</p>
-
-    <div class="question-box">
-        <div class="question">usssss???? bizmi ciddden yagmurum</div>
-        <div class="buttons">
-            <button class="btn btn-yes" id="yesBtn">Evet</button>
-            <button class="btn btn-no" id="noBtn">Hayır</button>
-        </div>
+    <p>meeee (nerd, normalbooooy) ve my altttgothiiiiiiccccc (thebestttt) için...</p>
+    
+    <div class="btn-container">
+        <div class="question" style="font-size: 1.8rem; width: 100%; position: absolute; top: 300px;">usssss???? bizmi ciddden yagmurum</div>
+        <button class="btn btn-yes" id="yesBtn">Evet</button>
+        <button class="btn btn-no" id="noBtn">Hayır</button>
     </div>
 
-    <p id="alt-mesaj">Sen mutluysan ben de mutluyum... Karanlıkta bile.</p>
+    <div id="result-msg" style="margin-top: 50px; font-size: 1.5rem;"></div>
 </div>
 
-<div class="music-player" id="toggle-sound">
-    <span id="speaker-icon">🔇</span>
-</div>
+<div id="music-control">🔇</div>
 <div id="player"></div>
 
 <script src="https://www.youtube.com/iframe_api"></script>
-
 <script>
-    const passInput = document.getElementById('password-input');
-    const overlay = document.getElementById('login-overlay');
-    const mainContent = document.getElementById('main-content');
+    const loginScreen = document.getElementById('login-screen');
+    const mainSite = document.getElementById('main-site');
+    const passInput = document.getElementById('passInput');
     const yesBtn = document.getElementById('yesBtn');
     const noBtn = document.getElementById('noBtn');
-    const altMesaj = document.getElementById('alt-mesaj');
-    let yesSize = 1.2;
+    const resultMsg = document.getElementById('result-msg');
 
-    // Şifre Fonksiyonu (Düzeltildi)
-    function checkPassword() {
+    // 1. ŞİFRE KONTROLÜ
+    function unlock() {
         if (passInput.value === "konyalim09") {
-            overlay.style.opacity = '0';
-            setTimeout(() => {
-                overlay.style.display = 'none';
-                mainContent.style.display = 'block';
-                setTimeout(() => { mainContent.style.opacity = '1'; }, 50);
-            }, 800);
+            loginScreen.style.display = 'none';
+            mainSite.style.display = 'block';
+            document.body.style.overflow = 'auto'; // Kaydırmayı aç
         } else {
-            alert("Erişim Reddedildi.");
+            alert("Yanlış Şifre!");
             passInput.value = "";
         }
     }
 
-    // Şifre ekranında Enter'a basınca giriş yapma
-    passInput.addEventListener("keypress", function(event) {
-        if (event.key === "Enter") {
-            checkPassword();
-        }
-    });
+    // Enter'la giriş yapma
+    passInput.addEventListener("keypress", (e) => { if(e.key === "Enter") unlock(); });
 
-    // Hayır Butonu (Kaçma)
+    // 2. HAYIR BUTONU KAÇMA
     noBtn.addEventListener('mouseover', () => {
-        const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
-        const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+        const x = Math.random() * (window.innerWidth - 100);
+        const y = Math.random() * (window.innerHeight - 50);
         noBtn.style.position = 'fixed';
         noBtn.style.left = x + 'px';
         noBtn.style.top = y + 'px';
-        noBtn.style.zIndex = "1000";
     });
 
-    // Evet Butonu (Büyüme)
+    // 3. EVET BUTONU BÜYÜME
+    let currentScale = 1;
     yesBtn.addEventListener('click', () => {
-        yesSize += 0.4;
-        yesBtn.style.fontSize = yesSize + "rem";
-        yesBtn.style.padding = (yesSize * 10) + "px " + (yesSize * 25) + "px";
-        altMesaj.innerHTML = "cnmmm konyalim ❤️ <br> <span style='color:var(--accent-pink)'>Seni Seviyorum!</span>";
-        altMesaj.style.color = "#ff69b4";
-        createHearts(15);
+        currentScale += 0.3;
+        yesBtn.style.transform = `scale(${currentScale})`;
+        resultMsg.innerHTML = "cnmmm konyalim ❤️";
+        spawnHearts();
     });
 
-    // Kalp Yağmuru
-    function createHearts(count){
-        for(let i=0; i<count; i++){
-            setTimeout(() => {
-                const heart = document.createElement('div');
-                heart.classList.add('heart');
-                heart.style.left = Math.random() * 100 + 'vw';
-                heart.innerText = ['🖤','💖','🥀','❤️','✨'][Math.floor(Math.random()*5)];
-                document.body.appendChild(heart);
-                setTimeout(() => heart.remove(), 4000);
-            }, i * 100);
+    // 4. KALP YAĞMURU
+    function spawnHearts() {
+        for(let i=0; i<15; i++) {
+            const h = document.createElement('div');
+            h.className = 'heart';
+            h.style.left = Math.random() * 100 + 'vw';
+            h.innerText = ['🖤','❤️','💖','🥀'][Math.floor(Math.random()*4)];
+            document.body.appendChild(h);
+            setTimeout(() => h.remove(), 4000);
         }
     }
 
-    // YouTube API ve Müzik
+    // 5. MÜZİK AYARI (YouTube)
     let player;
-    function onYouTubeIframeAPIReady(){
-        player = new YT.Player('player',{
-            height:'0', width:'0',
-            videoId:'58YMgJIaT8w',
-            playerVars:{autoplay:1, loop:1, playlist:'58YMgJIaT8w'},
-            events:{'onReady': (e) => e.target.mute()}
+    function onYouTubeIframeAPIReady() {
+        player = new YT.Player('player', {
+            height: '0', width: '0',
+            videoId: '58YMgJIaT8w',
+            playerVars: { 'autoplay': 1, 'loop': 1, 'playlist': '58YMgJIaT8w' },
+            events: { 'onReady': (e) => e.target.mute() }
         });
     }
 
-    document.getElementById('toggle-sound').addEventListener('click', function(){
-        if(player.isMuted()){
+    document.getElementById('music-control').addEventListener('click', function() {
+        if (player.isMuted()) {
             player.unMute();
-            document.getElementById('speaker-icon').innerText = '🔊';
+            this.innerText = '🔊';
         } else {
             player.mute();
-            document.getElementById('speaker-icon').innerText = '🔇';
+            this.innerText = '🔇';
         }
     });
 </script>
+
 </body>
 </html>
