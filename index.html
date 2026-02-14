@@ -1,218 +1,189 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sana Özel</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        /* TEMEL AYARLAR */
-        body, html {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            background: #000;
-            font-family: 'Cinzel', serif;
-            color: #ff0000;
-            overflow: hidden;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sana Özel</title>
 
-        /* 1. SİYAH ŞİFRE EKRANI (TAM EKRAN) */
-        #login-screen {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: #000;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-        }
+<style>
+body,html{
+margin:0;
+padding:0;
+width:100%;
+height:100%;
+background:#000;
+font-family:serif;
+color:#ff0000;
+overflow:hidden;
+}
 
-        #login-screen input {
-            padding: 15px;
-            font-size: 1.2rem;
-            background: #111;
-            border: 2px solid #8b0000;
-            color: white;
-            text-align: center;
-            outline: none;
-            width: 250px;
-            margin-bottom: 20px;
-        }
+/* LOGIN */
+#login-screen{
+position:fixed;
+inset:0;
+background:#000;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+z-index:99999;
+}
 
-        #login-screen button {
-            padding: 10px 40px;
-            background: #8b0000;
-            color: white;
-            border: none;
-            cursor: pointer;
-            font-weight: bold;
-            letter-spacing: 2px;
-        }
+#login-screen input{
+padding:15px;
+font-size:1.2rem;
+background:#111;
+border:2px solid #8b0000;
+color:white;
+text-align:center;
+outline:none;
+width:250px;
+margin-bottom:20px;
+}
 
-        /* 2. ANA İÇERİK (BAŞLANGIÇTA GİZLİ) */
-        #main-site {
-            display: none; 
-            text-align: center;
-            padding-top: 100px;
-            min-height: 100vh;
-            background: linear-gradient(to bottom, #000, #1a0000);
-        }
+#login-screen button{
+padding:10px 40px;
+background:#8b0000;
+color:white;
+border:none;
+cursor:pointer;
+font-weight:bold;
+letter-spacing:2px;
+}
 
-        h1 { font-size: 2.5rem; text-shadow: 0 0 15px #ff0000; }
-        p { font-size: 1.4rem; color: #ff69b4; margin: 20px; }
+/* MAIN */
+#main-site{
+display:none;
+text-align:center;
+padding-top:100px;
+min-height:100vh;
+background:linear-gradient(to bottom,#000,#1a0000);
+}
 
-        .btn-container {
-            margin-top: 50px;
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            min-height: 200px;
-            align-items: center;
-        }
+h1{font-size:2.5rem;text-shadow:0 0 15px #ff0000;}
+p{font-size:1.4rem;color:#ff69b4;margin:20px;}
 
-        .btn {
-            padding: 15px 35px;
-            font-size: 1.5rem;
-            border: 2px solid #ff0000;
-            background: transparent;
-            color: white;
-            cursor: pointer;
-            border-radius: 10px;
-            transition: 0.3s;
-        }
+.btn-container{
+margin-top:50px;
+display:flex;
+justify-content:center;
+gap:30px;
+min-height:200px;
+align-items:center;
+}
 
-        .btn-yes { background: #8b0000; }
+.btn{
+padding:15px 35px;
+font-size:1.5rem;
+border:2px solid #ff0000;
+background:transparent;
+color:white;
+cursor:pointer;
+border-radius:10px;
+transition:.3s;
+}
 
-        /* KALPLER */
-        .heart {
-            position: fixed;
-            font-size: 1.5rem;
-            pointer-events: none;
-            animation: moveUp 4s linear forwards;
-            z-index: 1000;
-        }
+.btn-yes{background:#8b0000;}
 
-        @keyframes moveUp {
-            0% { transform: translateY(100vh); opacity: 1; }
-            100% { transform: translateY(-10vh); opacity: 0; }
-        }
+.heart{
+position:fixed;
+font-size:1.5rem;
+pointer-events:none;
+animation:moveUp 4s linear forwards;
+}
 
-        /* MÜZİK BUTONU */
-        #music-control {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            cursor: pointer;
-            font-size: 2rem;
-            z-index: 1001;
-        }
+@keyframes moveUp{
+0%{transform:translateY(100vh);opacity:1;}
+100%{transform:translateY(-10vh);opacity:0;}
+}
 
-        /* YOUTUBE OYNATICIYI TAMAMEN GİZLE */
-        #player { display: none; visibility: hidden; width: 0; height: 0; }
-    </style>
+#music-control{
+position:fixed;
+bottom:20px;
+right:20px;
+cursor:pointer;
+font-size:2rem;
+z-index:1000;
+}
+</style>
 </head>
 <body>
 
 <div id="login-screen">
-    <h2 style="margin-bottom: 30px; letter-spacing: 5px;">ERİŞİM KISITLI</h2>
-    <input type="password" id="passInput" placeholder="Şifreyi Gir...">
-    <button onclick="unlock()">GİRİŞ YAP</button>
+<h2 style="margin-bottom:30px;letter-spacing:5px;">ERİŞİM KISITLI</h2>
+<input type="password" id="passInput" placeholder="Şifreyi Gir...">
+<button id="loginBtn">GİRİŞ YAP</button>
 </div>
 
 <div id="main-site">
-    <h1>bugün 14 subat olması biseyi degistirmiyor ama</h1>
-    <p>meeee (nerd, normalbooooy) ve my altttgothiiiiiiccccc (thebestttt) için...</p>
-    
-    <div class="btn-container">
-        <div class="question" style="font-size: 1.8rem; width: 100%; position: absolute; top: 300px;">usssss???? bizmi ciddden yagmurum</div>
-        <button class="btn btn-yes" id="yesBtn">Evet</button>
-        <button class="btn btn-no" id="noBtn">Hayır</button>
-    </div>
+<h1>bugün 14 subat olması biseyi degistirmiyor ama</h1>
+<p>meeee (nerd, normalbooooy) ve my altttgothiiiiiiccccc (thebestttt) için...</p>
 
-    <div id="result-msg" style="margin-top: 50px; font-size: 1.5rem;"></div>
+<div class="btn-container">
+<button class="btn btn-yes" id="yesBtn">Evet</button>
+<button class="btn" id="noBtn">Hayır</button>
+</div>
+
+<div id="result-msg" style="margin-top:50px;font-size:1.5rem;"></div>
 </div>
 
 <div id="music-control">🔇</div>
-<div id="player"></div>
 
-<script src="https://www.youtube.com/iframe_api"></script>
 <script>
-    const loginScreen = document.getElementById('login-screen');
-    const mainSite = document.getElementById('main-site');
-    const passInput = document.getElementById('passInput');
-    const yesBtn = document.getElementById('yesBtn');
-    const noBtn = document.getElementById('noBtn');
-    const resultMsg = document.getElementById('result-msg');
+const loginScreen=document.getElementById('login-screen');
+const mainSite=document.getElementById('main-site');
+const passInput=document.getElementById('passInput');
+const loginBtn=document.getElementById('loginBtn');
+const yesBtn=document.getElementById('yesBtn');
+const noBtn=document.getElementById('noBtn');
+const resultMsg=document.getElementById('result-msg');
 
-    // 1. ŞİFRE KONTROLÜ
-    function unlock() {
-        if (passInput.value === "konyalim09") {
-            loginScreen.style.display = 'none';
-            mainSite.style.display = 'block';
-            document.body.style.overflow = 'auto'; // Kaydırmayı aç
-        } else {
-            alert("Yanlış Şifre!");
-            passInput.value = "";
-        }
-    }
+/* LOGIN */
+function unlock(){
+if(passInput.value.trim()==="konyalim09"){
+loginScreen.style.display="none";
+mainSite.style.display="block";
+document.body.style.overflow="auto";
+}else{
+alert("Yanlış Şifre!");
+passInput.value="";
+}
+}
 
-    // Enter'la giriş yapma
-    passInput.addEventListener("keypress", (e) => { if(e.key === "Enter") unlock(); });
+loginBtn.addEventListener("click",unlock);
+passInput.addEventListener("keypress",e=>{
+if(e.key==="Enter") unlock();
+});
 
-    // 2. HAYIR BUTONU KAÇMA
-    noBtn.addEventListener('mouseover', () => {
-        const x = Math.random() * (window.innerWidth - 100);
-        const y = Math.random() * (window.innerHeight - 50);
-        noBtn.style.position = 'fixed';
-        noBtn.style.left = x + 'px';
-        noBtn.style.top = y + 'px';
-    });
+/* NO BUTTON KAÇIYOR */
+noBtn.addEventListener("mouseover",()=>{
+const x=Math.random()*(window.innerWidth-100);
+const y=Math.random()*(window.innerHeight-50);
+noBtn.style.position="fixed";
+noBtn.style.left=x+"px";
+noBtn.style.top=y+"px";
+});
 
-    // 3. EVET BUTONU BÜYÜME
-    let currentScale = 1;
-    yesBtn.addEventListener('click', () => {
-        currentScale += 0.3;
-        yesBtn.style.transform = `scale(${currentScale})`;
-        resultMsg.innerHTML = "cnmmm konyalim ❤️";
-        spawnHearts();
-    });
+/* YES BUTTON */
+let scale=1;
+yesBtn.addEventListener("click",()=>{
+scale+=0.3;
+yesBtn.style.transform=`scale(${scale})`;
+resultMsg.innerHTML="cnmmm konyalim ❤️";
+spawnHearts();
+});
 
-    // 4. KALP YAĞMURU
-    function spawnHearts() {
-        for(let i=0; i<15; i++) {
-            const h = document.createElement('div');
-            h.className = 'heart';
-            h.style.left = Math.random() * 100 + 'vw';
-            h.innerText = ['🖤','❤️','💖','🥀'][Math.floor(Math.random()*4)];
-            document.body.appendChild(h);
-            setTimeout(() => h.remove(), 4000);
-        }
-    }
-
-    // 5. MÜZİK AYARI (YouTube)
-    let player;
-    function onYouTubeIframeAPIReady() {
-        player = new YT.Player('player', {
-            height: '0', width: '0',
-            videoId: '58YMgJIaT8w',
-            playerVars: { 'autoplay': 1, 'loop': 1, 'playlist': '58YMgJIaT8w' },
-            events: { 'onReady': (e) => e.target.mute() }
-        });
-    }
-
-    document.getElementById('music-control').addEventListener('click', function() {
-        if (player.isMuted()) {
-            player.unMute();
-            this.innerText = '🔊';
-        } else {
-            player.mute();
-            this.innerText = '🔇';
-        }
-    });
+/* HEARTS */
+function spawnHearts(){
+for(let i=0;i<15;i++){
+const h=document.createElement("div");
+h.className="heart";
+h.style.left=Math.random()*100+"vw";
+h.innerText=["🖤","❤️","💖","🥀"][Math.floor(Math.random()*4)];
+document.body.appendChild(h);
+setTimeout(()=>h.remove(),4000);
+}
+}
 </script>
 
 </body>
