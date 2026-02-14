@@ -18,11 +18,8 @@
   h1 { margin-top:40px; font-size:2.5rem; text-shadow:0 0 10px #ff0000,0 0 5px #ff69b4; }
   p { font-size:1.3rem; margin:10px 20px; text-shadow:0 0 5px #ff0000,0 0 3px #ff69b4; }
   .question { font-size:1.5rem; margin:20px; color:#800080; text-shadow:0 0 5px #800080,0 0 3px #ff69b4; }
-  .gallery { display:flex; flex-wrap:wrap; justify-content:center; margin:30px 0; gap:10px; }
-  .gallery img { width:clamp(120px,20vw,150px); height:clamp(120px,20vw,150px); object-fit:cover; border-radius:15px; border:2px solid #ff0000; transition:transform 0.3s; cursor:pointer; }
-  .gallery img:hover { transform:scale(1.1); box-shadow:0 0 15px #ff0000,0 0 5px #ff69b4; }
   .buttons { margin:20px; display:flex; justify-content:center; gap:10px; }
-  .btn { font-family:'Cinzel', serif; font-size:1.2rem; padding:10px 20px; border:2px solid #ff0000; border-radius:10px; background-color:#000; color:#ff0000; cursor:pointer; transition:0.3s; text-shadow:0 0 5px #ff0000,0 0 3px #ff69b4; }
+  .btn { font-family:'Cinzel', serif; font-size:1.2rem; padding:10px 20px; border:2px solid #ff0000; border-radius:10px; background-color:#000; color:#ff0000; cursor:pointer; transition:0.3s; text-shadow:0 0 5px #ff0000,0 0 3px #ff69b4; position:relative; }
   .btn-yes { background-color:#800080; color:white; }
   .btn:hover { transform:scale(1.1); box-shadow:0 0 10px #ff0000,0 0 5px #ff69b4; }
   #alt-mesaj { font-size:1rem; margin-top:30px; color:#ff3366; text-shadow:0 0 5px #ff3366,0 0 3px #ff69b4; }
@@ -31,6 +28,8 @@
   @keyframes float { 0% { transform:translateY(0) rotate(0deg); opacity:1; } 100% { transform:translateY(-500px) rotate(360deg); opacity:0; } }
   .decor { position:absolute; width:50px; height:50px; animation:float-decor 5s linear infinite; filter:brightness(0.5); }
   @keyframes float-decor { 0%{transform:translateY(0) rotate(0deg);}100%{transform:translateY(-600px) rotate(360deg);} }
+  .fade-in { animation: fadeIn 1s ease-in; }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 </style>
 </head>
 <body>
@@ -51,11 +50,8 @@
   <button class="btn btn-no" id="no2">Hayır</button>
 </div>
 
-<p id="alt-mesaj">Sen mutluysan ben de mutluyum... Karanlıkta bile.</p>
+<p id="alt-mesaj" class="fade-in">Sen mutluysan ben de mutluyum... Karanlıkta bile.</p>
 <img id="special-photo" src="https://via.placeholder.com/200/000000/ff0000?text=Ozel+Gothic+Foto" alt="Özel gotik fotoğraf">
-
-<!-- Fotoğraf galerisi -->
-<div class="gallery" id="gallery"></div>
 
 <!-- YouTube Player -->
 <div id="player" style="display:none;"></div>
@@ -78,21 +74,6 @@
 <script src="https://www.youtube.com/iframe_api"></script>
 
 <script>
-  // Fotoğrafları ekleme
-  const gallery = document.getElementById('gallery');
-  const fotoUrls = [
-    'https://via.placeholder.com/150/000000/ff0000?text=Foto1',
-    'https://via.placeholder.com/150/000000/ff0000?text=Foto2',
-    'https://via.placeholder.com/150/000000/ff0000?text=Foto3',
-    'https://via.placeholder.com/150/000000/ff0000?text=Foto4'
-  ];
-  fotoUrls.forEach(url => {
-    const img = document.createElement('img');
-    img.src = url;
-    img.alt = 'Gothic foto';
-    gallery.appendChild(img);
-  });
-
   // Heart animasyonu
   const body = document.body;
   function createHearts(count){
@@ -119,23 +100,42 @@
   const altMesaj=document.getElementById('alt-mesaj');
   const specialPhoto=document.getElementById('special-photo');
 
+  // Hayır butonlarını mouse'dan uzaklaştır ve basıldığında kaybolsun
+  function moveButton(button) {
+    const maxX = window.innerWidth - button.offsetWidth;
+    const maxY = window.innerHeight - button.offsetHeight;
+    const newX = Math.random() * maxX;
+    const newY = Math.random() * maxY;
+    button.style.position = 'absolute';
+    button.style.left = newX + 'px';
+    button.style.top = newY + 'px';
+  }
+
+  no1.addEventListener('mouseover', () => moveButton(no1));
+  no1.addEventListener('click', () => {
+    no1.style.display = 'none';
+    b1.style.display='none'; q1.style.display='none';
+    b2.style.display='flex'; q2.style.display='block';
+    altMesaj.innerText="Hayır mı? Karanlıkta kaçamazsın! 😈";
+  });
+
+  no2.addEventListener('mouseover', () => moveButton(no2));
+  no2.addEventListener('click', () => {
+    no2.style.display = 'none';
+    altMesaj.innerText="Tamam, belki sonra... 😔";
+  });
+
   yes1.addEventListener('click',()=>{
     createHearts(15);
     b1.style.display='none'; q1.style.display='none';
     b2.style.display='flex'; q2.style.display='block';
     altMesaj.innerText="Harika! Şimdi ikinci soruya geçelim...";
   });
-  no1.addEventListener('click',()=>{
-    b1.style.display='none'; q1.style.display='none';
-    b2.style.display='flex'; q2.style.display='block';
-    altMesaj.innerText="Hayır mı? Karanlıkta kaçamazsın! 😈";
-  });
   yes2.addEventListener('click',()=>{
     specialPhoto.style.display='block';
     altMesaj.innerText="cnmmm konyalim";
     createHearts(20);
   });
-  no2.addEventListener('click',()=>{ altMesaj.innerText="Tamam, belki sonra... 😔"; });
 
   // YouTube IFrame API
   let player;
