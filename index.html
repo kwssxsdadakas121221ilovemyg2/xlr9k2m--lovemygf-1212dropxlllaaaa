@@ -14,45 +14,10 @@ min-height:100%;
 background:#000;
 font-family:serif;
 color:#ff0000;
+overflow-x:hidden;
 }
 
-/* LOGIN */
-#login-screen{
-position:fixed;
-inset:0;
-background:#000;
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-z-index:99999;
-}
-
-#login-screen input{
-padding:15px;
-font-size:1.2rem;
-background:#111;
-border:2px solid #8b0000;
-color:white;
-text-align:center;
-outline:none;
-width:250px;
-margin-bottom:20px;
-}
-
-#login-screen button{
-padding:10px 40px;
-background:#8b0000;
-color:white;
-border:none;
-cursor:pointer;
-font-weight:bold;
-letter-spacing:2px;
-}
-
-/* MAIN */
 #main-site{
-display:none;
 text-align:center;
 padding:100px 20px 50px 20px;
 min-height:100vh;
@@ -64,20 +29,12 @@ font-size:2rem;
 text-shadow:0 0 15px #ff0000;
 }
 
-p{
-font-size:1.2rem;
-color:#ff69b4;
-margin:20px 0;
-}
-
 .btn-container{
 margin-top:50px;
 display:flex;
 justify-content:center;
 gap:30px;
 flex-wrap:wrap;
-min-height:150px;
-align-items:center;
 }
 
 .btn{
@@ -95,90 +52,117 @@ transition:.3s;
 background:#8b0000;
 }
 
+#typing-text{
+font-size:1.8rem;
+margin-top:40px;
+color:#ff69b4;
+min-height:40px;
+}
+
+/* HEART */
 .heart{
 position:fixed;
 font-size:1.5rem;
 pointer-events:none;
-animation:moveUp 4s linear forwards;
+animation:fall 4s linear forwards;
 }
 
-@keyframes moveUp{
-0%{transform:translateY(100vh);opacity:1;}
-100%{transform:translateY(-10vh);opacity:0;}
+@keyframes fall{
+0%{transform:translateY(-10vh);opacity:1;}
+100%{transform:translateY(110vh);opacity:0;}
 }
 </style>
 </head>
 <body>
 
-<div id="login-screen">
-<h2 style="margin-bottom:30px;letter-spacing:5px;">ERİŞİM KISITLI</h2>
-<input type="password" id="passInput" placeholder="Şifreyi Gir...">
-<button id="loginBtn">GİRİŞ YAP</button>
-</div>
-
 <div id="main-site">
-<h1>bugün 14 subat olması biseyi degistirmiyor ama</h1>
-<p>meeee (nerd, normalbooooy) ve my altttgothiiiiiiccccc (thebestttt) için...</p>
 
+<!-- 1. SORU -->
+<div id="question1">
+<h1>Benimle olur musun? 🖤</h1>
 <div class="btn-container">
-<button class="btn btn-yes" id="yesBtn">Evet</button>
-<button class="btn" id="noBtn">Hayır</button>
+<button class="btn btn-yes" id="yes1">Evet</button>
+<button class="btn" id="no1">Hayır</button>
+</div>
 </div>
 
-<div id="result-msg" style="margin-top:50px;font-size:1.5rem;"></div>
+<!-- 2. SORU -->
+<div id="question2" style="display:none;">
+<h1 id="typing-text"></h1>
+<div class="btn-container" id="second-buttons" style="display:none;">
+<button class="btn btn-yes" id="yes2">Yes</button>
+<button class="btn" id="no2">No</button>
+</div>
+</div>
+
+<div id="result" style="margin-top:50px;font-size:1.6rem;color:#ff69b4;"></div>
+
 </div>
 
 <script>
-const loginScreen=document.getElementById('login-screen');
-const mainSite=document.getElementById('main-site');
-const passInput=document.getElementById('passInput');
-const loginBtn=document.getElementById('loginBtn');
-const yesBtn=document.getElementById('yesBtn');
-const noBtn=document.getElementById('noBtn');
-const resultMsg=document.getElementById('result-msg');
+const q1=document.getElementById("question1");
+const q2=document.getElementById("question2");
+const yes1=document.getElementById("yes1");
+const yes2=document.getElementById("yes2");
+const no1=document.getElementById("no1");
+const no2=document.getElementById("no2");
+const typingText=document.getElementById("typing-text");
+const secondButtons=document.getElementById("second-buttons");
+const result=document.getElementById("result");
 
-/* LOGIN */
-function unlock(){
-if(passInput.value.trim()==="konyalim09"){
-loginScreen.style.display="none";
-mainSite.style.display="block";
-document.body.style.overflow="auto";
+/* YAZI ANİMASYONU */
+function typeWriter(text,callback){
+let i=0;
+typingText.innerHTML="";
+let speed=60;
+function typing(){
+if(i<text.length){
+typingText.innerHTML+=text.charAt(i);
+i++;
+setTimeout(typing,speed);
 }else{
-alert("Yanlış Şifre!");
-passInput.value="";
+if(callback) callback();
 }
 }
+typing();
+}
 
-loginBtn.addEventListener("click",unlock);
-passInput.addEventListener("keypress",e=>{
-if(e.key==="Enter") unlock();
+/* 1. EVET */
+yes1.addEventListener("click",()=>{
+q1.style.display="none";
+q2.style.display="block";
+typeWriter("Do you like me? 🖤",()=>{
+secondButtons.style.display="flex";
+});
 });
 
-/* NO BUTTON KAÇIYOR */
-noBtn.addEventListener("click",()=>{
-const x=Math.random()*(window.innerWidth-120);
-const y=Math.random()*(window.innerHeight-80);
-noBtn.style.position="fixed";
-noBtn.style.left=x+"px";
-noBtn.style.top=y+"px";
-});
-
-/* YES BUTTON */
-let scale=1;
-yesBtn.addEventListener("click",()=>{
-scale+=0.3;
-yesBtn.style.transform=`scale(${scale})`;
-resultMsg.innerHTML="cnmmm konyalim ❤️";
+/* 2. EVET */
+yes2.addEventListener("click",()=>{
+result.innerHTML="";
+typeWriter("I knew ittt ❤️",()=>{
 spawnHearts();
 });
+});
 
-/* HEARTS */
+/* NO KAÇIYOR */
+function moveButton(btn){
+const x=Math.random()*(window.innerWidth-120);
+const y=Math.random()*(window.innerHeight-80);
+btn.style.position="fixed";
+btn.style.left=x+"px";
+btn.style.top=y+"px";
+}
+
+no1.addEventListener("click",()=>moveButton(no1));
+no2.addEventListener("click",()=>moveButton(no2));
+
+/* KALP YAĞMURU */
 function spawnHearts(){
-for(let i=0;i<15;i++){
+for(let i=0;i<25;i++){
 const h=document.createElement("div");
 h.className="heart";
 h.style.left=Math.random()*100+"vw";
-h.innerText=["🖤","❤️","💖","🥀"][Math.floor(Math.random()*4)];
+h.innerText=["❤️","💖","🖤","💕"][Math.floor(Math.random()*4)];
 document.body.appendChild(h);
 setTimeout(()=>h.remove(),4000);
 }
