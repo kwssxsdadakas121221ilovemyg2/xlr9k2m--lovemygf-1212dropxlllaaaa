@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gothic Sevgililer Günü</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  body {
+    margin: 0;
+    font-family: 'Cinzel', serif;
+    background: linear-gradient(to bottom, #000000, #2a2a2a, #ff69b4);
+    overflow-x: hidden;
+    text-align: center;
+    color: #ff0000;
+    position: relative;
+  }
+  h1 { margin-top:40px; font-size:2.5rem; text-shadow:0 0 10px #ff0000,0 0 5px #ff69b4; }
+  p { font-size:1.3rem; margin:10px 20px; text-shadow:0 0 5px #ff0000,0 0 3px #ff69b4; }
+  .question { font-size:1.5rem; margin:20px; color:#800080; text-shadow:0 0 5px #800080,0 0 3px #ff69b4; }
+  .gallery { display:flex; flex-wrap:wrap; justify-content:center; margin:30px 0; gap:10px; }
+  .gallery img { width:clamp(120px,20vw,150px); height:clamp(120px,20vw,150px); object-fit:cover; border-radius:15px; border:2px solid #ff0000; transition:transform 0.3s; cursor:pointer; }
+  .gallery img:hover { transform:scale(1.1); box-shadow:0 0 15px #ff0000,0 0 5px #ff69b4; }
+  .buttons { margin:20px; display:flex; justify-content:center; gap:10px; }
+  .btn { font-family:'Cinzel', serif; font-size:1.2rem; padding:10px 20px; border:2px solid #ff0000; border-radius:10px; background-color:#000; color:#ff0000; cursor:pointer; transition:0.3s; text-shadow:0 0 5px #ff0000,0 0 3px #ff69b4; }
+  .btn-yes { background-color:#800080; color:white; }
+  .btn:hover { transform:scale(1.1); box-shadow:0 0 10px #ff0000,0 0 5px #ff69b4; }
+  #alt-mesaj { font-size:1rem; margin-top:30px; color:#ff3366; text-shadow:0 0 5px #ff3366,0 0 3px #ff69b4; }
+  #special-photo { display:none; margin:20px auto; width:200px; height:200px; border-radius:15px; border:2px solid #ff0000; object-fit:cover; transition:opacity 0.5s; box-shadow:0 0 10px #ff0000,0 0 5px #ff69b4; }
+  .heart { position:absolute; font-size:1.5rem; color:#000; animation:float 3s linear infinite; pointer-events:none; }
+  @keyframes float { 0% { transform:translateY(0) rotate(0deg); opacity:1; } 100% { transform:translateY(-500px) rotate(360deg); opacity:0; } }
+  .decor { position:absolute; width:50px; height:50px; animation:float-decor 5s linear infinite; filter:brightness(0.5); }
+  @keyframes float-decor { 0%{transform:translateY(0) rotate(0deg);}100%{transform:translateY(-600px) rotate(360deg);} }
+</style>
+</head>
+<body>
+
+<h1>bugün 14 subat olması biseyi degistirmiyor ama</h1>
+<p>meeee (nerd, normalbooooy) ve my altttgothiiiiiiccccc (thebestttt) için...</p>
+
+<!-- Sorular ve butonlar -->
+<div id="question1" class="question">usssss???? bizmi ciddden yagmurum</div>
+<div class="buttons" id="buttons1">
+  <button class="btn btn-yes" id="yes1">Evet</button>
+  <button class="btn btn-no" id="no1">Hayır</button>
+</div>
+
+<div id="question2" class="question" style="display:none;">do u liked me</div>
+<div class="buttons" id="buttons2" style="display:none;">
+  <button class="btn btn-yes" id="yes2">Evet</button>
+  <button class="btn btn-no" id="no2">Hayır</button>
+</div>
+
+<p id="alt-mesaj">Sen mutluysan ben de mutluyum... Karanlıkta bile.</p>
+<img id="special-photo" src="https://via.placeholder.com/200/000000/ff0000?text=Ozel+Gothic+Foto" alt="Özel gotik fotoğraf">
+
+<!-- Fotoğraf galerisi -->
+<div class="gallery" id="gallery"></div>
+
+<!-- YouTube Player -->
+<div id="player" style="display:none;"></div>
+
+<!-- Müzik Seçim ve Ses Kontrol -->
+<div style="position:fixed; bottom:20px; left:20px; z-index:1000; background:#000; padding:10px; border:2px solid #ff0000; border-radius:8px;">
+  <label style="color:#ff3366;">Müziği Seç:</label>
+  <select id="music-select" style="font-size:1rem; margin-right:8px;">
+    <option value="58YMgJIaT8w">Yağmurlar (Seçenek 1)</option>
+    <option value="MnnAvM6_YxA">Yağmurlar (Seçenek 2)</option>
+  </select>
+  <button id="toggle-sound" style="font-size:1rem; padding:6px 10px; cursor:pointer;">🔇</button>
+</div>
+
+<img src="https://via.placeholder.com/50/000000/ff0000?text=Gothic+Cicek" class="decor" style="left:10%; top:90%;">
+<img src="https://via.placeholder.com/50/000000/ff0000?text=Gothic+Kedi" class="decor" style="left:70%; top:100%;">
+<img src="https://via.placeholder.com/50/000000/ff0000?text=Gothic+Cicek" class="decor" style="left:50%; top:95%;">
+
+<!-- YouTube IFrame API -->
+<script src="https://www.youtube.com/iframe_api"></script>
+
+<script>
+  // Fotoğrafları ekleme
+  const gallery = document.getElementById('gallery');
+  const fotoUrls = [
+    'https://via.placeholder.com/150/000000/ff0000?text=Foto1',
+    'https://via.placeholder.com/150/000000/ff0000?text=Foto2',
+    'https://via.placeholder.com/150/000000/ff0000?text=Foto3',
+    'https://via.placeholder.com/150/000000/ff0000?text=Foto4'
+  ];
+  fotoUrls.forEach(url => {
+    const img = document.createElement('img');
+    img.src = url;
+    img.alt = 'Gothic foto';
+    gallery.appendChild(img);
+  });
+
+  // Heart animasyonu
+  const body = document.body;
+  function createHearts(count){
+    for(let i=0;i<count;i++){
+      const heart = document.createElement('div');
+      heart.classList.add('heart');
+      heart.style.left = Math.random()*window.innerWidth+'px';
+      heart.style.fontSize = (Math.random()*20+15)+'px';
+      heart.innerText = ['🖤','💖','💜','❤️'][Math.floor(Math.random()*4)];
+      body.appendChild(heart);
+      setTimeout(()=>heart.remove(),3000);
+    }
+  }
+
+  // Soru butonları
+  const yes1=document.getElementById('yes1');
+  const no1=document.getElementById('no1');
+  const yes2=document.getElementById('yes2');
+  const no2=document.getElementById('no2');
+  const q1=document.getElementById('question1');
+  const q2=document.getElementById('question2');
+  const b1=document.getElementById('buttons1');
+  const b2=document.getElementById('buttons2');
+  const altMesaj=document.getElementById('alt-mesaj');
+  const specialPhoto=document.getElementById('special-photo');
+
+  yes1.addEventListener('click',()=>{
+    createHearts(15);
+    b1.style.display='none'; q1.style.display='none';
+    b2.style.display='flex'; q2.style.display='block';
+    altMesaj.innerText="Harika! Şimdi ikinci soruya geçelim...";
+  });
+  no1.addEventListener('click',()=>{
+    b1.style.display='none'; q1.style.display='none';
+    b2.style.display='flex'; q2.style.display='block';
+    altMesaj.innerText="Hayır mı? Karanlıkta kaçamazsın! 😈";
+  });
+  yes2.addEventListener('click',()=>{
+    specialPhoto.style.display='block';
+    altMesaj.innerText="cnmmm konyalim";
+    createHearts(20);
+  });
+  no2.addEventListener('click',()=>{ altMesaj.innerText="Tamam, belki sonra... 😔"; });
+
+  // YouTube IFrame API
+  let player;
+  function onYouTubeIframeAPIReady(){
+    player = new YT.Player('player',{
+      height:'0', width:'0',
+      videoId:'58YMgJIaT8w',
+      playerVars:{autoplay:1, loop:1, playlist:'58YMgJIaT8w', mute:1},
+      events:{'onReady':onPlayerReady}
+    });
+  }
+  function onPlayerReady(event){ event.target.playVideo(); }
+
+  const musicSelect=document.getElementById('music-select');
+  const toggleBtn=document.getElementById('toggle-sound');
+  let isMuted=true;
+
+  musicSelect.addEventListener('change',()=>{
+    const id=musicSelect.value;
+    player.loadVideoById({videoId:id, startSeconds:0});
+    player.mute();
+    toggleBtn.innerText='🔇';
+    isMuted=true;
+  });
+
+  toggleBtn.addEventListener('click',()=>{
+    if(isMuted){ player.unMute(); toggleBtn.innerText='🔊'; }
+    else{ player.mute(); toggleBtn.innerText='🔇'; }
+    isMuted=!isMuted;
+  });
+</script>
+</body>
+</html>
