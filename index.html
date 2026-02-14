@@ -6,165 +6,180 @@
 <title>Gothic Sevgililer Günü</title>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
 <style>
+  /* Giriş Ekranı (Overlay) */
+  #login-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: black;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    color: white;
+  }
+  #login-overlay input {
+    padding: 10px;
+    font-family: 'Cinzel', serif;
+    background: #1a1a1a;
+    border: 1px solid #ff0000;
+    color: white;
+    text-align: center;
+    outline: none;
+  }
+  #login-overlay button {
+    margin-top: 15px;
+    padding: 8px 20px;
+    background: #ff0000;
+    color: black;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+  }
+
+  /* Ana Sayfa CSS */
   body {
     margin: 0;
     font-family: 'Cinzel', serif;
-    background: linear-gradient(to bottom, #000000, #2a2a2a, #ff69b4);
+    background: linear-gradient(to bottom, #000000, #2a2a2a, #1a0000);
     overflow-x: hidden;
     text-align: center;
     color: #ff0000;
     position: relative;
+    min-height: 100vh;
+    display: none; /* Şifre girilene kadar gizli */
   }
-  h1 { margin-top:40px; font-size:2.5rem; text-shadow:0 0 10px #ff0000,0 0 5px #ff69b4; }
-  p { font-size:1.3rem; margin:10px 20px; text-shadow:0 0 5px #ff0000,0 0 3px #ff69b4; }
-  .question { font-size:1.5rem; margin:20px; color:#800080; text-shadow:0 0 5px #800080,0 0 3px #ff69b4; }
-  .buttons { margin:20px; display:flex; justify-content:center; gap:10px; }
-  .btn { font-family:'Cinzel', serif; font-size:1.2rem; padding:10px 20px; border:2px solid #ff0000; border-radius:10px; background-color:#000; color:#ff0000; cursor:pointer; transition:0.3s; text-shadow:0 0 5px #ff0000,0 0 3px #ff69b4; position:relative; }
-  .btn-yes { background-color:#800080; color:white; }
-  .btn:hover { transform:scale(1.1); box-shadow:0 0 10px #ff0000,0 0 5px #ff69b4; }
-  #alt-mesaj { font-size:1rem; margin-top:30px; color:#ff3366; text-shadow:0 0 5px #ff3366,0 0 3px #ff69b4; }
-  #special-photo { display:none; margin:20px auto; width:200px; height:200px; border-radius:15px; border:2px solid #ff0000; object-fit:cover; transition:opacity 0.5s; box-shadow:0 0 10px #ff0000,0 0 5px #ff69b4; }
-  .heart { position:absolute; font-size:1.5rem; color:#000; animation:float 3s linear infinite; pointer-events:none; }
-  @keyframes float { 0% { transform:translateY(0) rotate(0deg); opacity:1; } 100% { transform:translateY(-500px) rotate(360deg); opacity:0; } }
-  .decor { position:absolute; width:50px; height:50px; animation:float-decor 5s linear infinite; filter:brightness(0.5); }
-  @keyframes float-decor { 0%{transform:translateY(0) rotate(0deg);}100%{transform:translateY(-600px) rotate(360deg);} }
-  .fade-in { animation: fadeIn 1s ease-in; }
-  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  h1 { margin-top:40px; font-size:2.5rem; text-shadow:0 0 10px #ff0000; }
+  p { font-size:1.3rem; margin:10px 20px; }
+  .question { font-size:1.5rem; margin:20px; color:#ff69b4; }
+  .buttons { margin:20px; display:flex; justify-content:center; gap:20px; align-items: center; min-height: 100px;}
+  
+  .btn { 
+    font-family:'Cinzel', serif; 
+    font-size:1.2rem; 
+    padding:10px 20px; 
+    border:2px solid #ff0000; 
+    border-radius:10px; 
+    background-color:#000; 
+    color:#ff0000; 
+    cursor:pointer; 
+    transition: transform 0.2s, font-size 0.2s; 
+    position: relative;
+  }
+  
+  .btn-yes { background-color:#800080; color:white; border-color: #ff69b4; }
+  
+  #alt-mesaj { font-size:1.2rem; margin-top:30px; color:#ff3366; }
+  
+  .heart { position:absolute; font-size:1.5rem; animation:float 3s linear infinite; pointer-events:none; z-index: 50; }
+  @keyframes float { 0% { transform:translateY(0) rotate(0deg); opacity:1; } 100% { transform:translateY(-800px) rotate(360deg); opacity:0; } }
 </style>
 </head>
 <body>
 
-<h1>bugün 14 subat olması biseyi degistirmiyor ama</h1>
-<p>meeee (nerd, normalbooooy) ve my altttgothiiiiiiccccc (thebestttt) için...</p>
-
-<!-- Sorular ve butonlar -->
-<div id="question1" class="question">usssss???? bizmi ciddden yagmurum</div>
-<div class="buttons" id="buttons1">
-  <button class="btn btn-yes" id="yes1">Evet</button>
-  <button class="btn btn-no" id="no1">Hayır</button>
+<div id="login-overlay">
+  <h2>ERİŞİM İÇİN ŞİFRE GİRİNİZ</h2>
+  <input type="password" id="password-input" placeholder="Şifre...">
+  <button onclick="checkPassword()">GİRİŞ</button>
 </div>
 
-<div id="question2" class="question" style="display:none;">do u liked me</div>
-<div class="buttons" id="buttons2" style="display:none;">
-  <button class="btn btn-yes" id="yes2">Evet</button>
-  <button class="btn btn-no" id="no2">Hayır</button>
+<div id="main-content">
+    <h1>bugün 14 subat olması biseyi degistirmiyor ama</h1>
+    <p>meeee (nerd, normalbooooy) ve my altttgothiiiiiiccccc (thebestttt) için...</p>
+
+    <div id="question-area">
+        <div id="q1" class="question">usssss???? bizmi ciddden yagmurum</div>
+        <div class="buttons">
+            <button class="btn btn-yes" id="yesBtn">Evet</button>
+            <button class="btn btn-no" id="noBtn">Hayır</button>
+        </div>
+    </div>
+
+    <p id="alt-mesaj">Sen mutluysan ben de mutluyum... Karanlıkta bile.</p>
 </div>
 
-<p id="alt-mesaj" class="fade-in">Sen mutluysan ben de mutluyum... Karanlıkta bile.</p>
-<img id="special-photo" src="https://via.placeholder.com/200/000000/ff0000?text=Ozel+Gothic+Foto" alt="Özel gotik fotoğraf">
-
-<!-- YouTube Player -->
-<div id="player" style="display:none;"></div>
-
-<!-- Müzik Seçim ve Ses Kontrol -->
-<div style="position:fixed; bottom:20px; left:20px; z-index:1000; background:#000; padding:10px; border:2px solid #ff0000; border-radius:8px;">
-  <label style="color:#ff3366;">Müziği Seç:</label>
-  <select id="music-select" style="font-size:1rem; margin-right:8px;">
-    <option value="58YMgJIaT8w">Yağmurlar (Seçenek 1)</option>
-    <option value="MnnAvM6_YxA">Yağmurlar (Seçenek 2)</option>
-  </select>
-  <button id="toggle-sound" style="font-size:1rem; padding:6px 10px; cursor:pointer;">🔇</button>
+<div style="position:fixed; bottom:20px; left:20px; z-index:1000; background:#000; padding:10px; border:1px solid #ff0000; border-radius:8px;">
+    <button id="toggle-sound" style="cursor:pointer; background:none; border:none; font-size:1.5rem;">🔇</button>
+    <div id="player"></div>
 </div>
 
-<img src="https://via.placeholder.com/50/000000/ff0000?text=Gothic+Cicek" class="decor" style="left:10%; top:90%;">
-<img src="https://via.placeholder.com/50/000000/ff0000?text=Gothic+Kedi" class="decor" style="left:70%; top:100%;">
-<img src="https://via.placeholder.com/50/000000/ff0000?text=Gothic+Cicek" class="decor" style="left:50%; top:95%;">
-
-<!-- YouTube IFrame API -->
 <script src="https://www.youtube.com/iframe_api"></script>
 
 <script>
-  // Heart animasyonu
-  const body = document.body;
+  const passInput = document.getElementById('password-input');
+  const overlay = document.getElementById('login-overlay');
+  const yesBtn = document.getElementById('yesBtn');
+  const noBtn = document.getElementById('noBtn');
+  const altMesaj = document.getElementById('alt-mesaj');
+  let yesSize = 1.2;
+
+  // Şifre Kontrolü
+  function checkPassword() {
+    if (passInput.value === "konyalim09") {
+      overlay.style.display = 'none';
+      document.body.style.display = 'block';
+    } else {
+      alert("Yanlış şifre!");
+      passInput.value = "";
+    }
+  }
+
+  // Hayır butonu kaçma ve yok olma fonksiyonu
+  noBtn.addEventListener('mouseover', () => {
+    const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+    const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+    noBtn.style.position = 'fixed';
+    noBtn.style.left = x + 'px';
+    noBtn.style.top = y + 'px';
+  });
+
+  noBtn.addEventListener('click', () => {
+    noBtn.style.display = 'none'; // Basılsa bile yok olur
+    altMesaj.innerText = "Zaten hayır seçeneğin yoktu... 😉";
+  });
+
+  // Evet butonu büyüme fonksiyonu
+  yesBtn.addEventListener('click', () => {
+    yesSize += 0.5;
+    yesBtn.style.fontSize = yesSize + "rem";
+    yesBtn.style.padding = (yesSize * 10) + "px " + (yesSize * 20) + "px";
+    altMesaj.innerText = "cnmmm konyalim ❤️";
+    createHearts(10);
+  });
+
+  // Kalp Animasyonu
   function createHearts(count){
     for(let i=0;i<count;i++){
       const heart = document.createElement('div');
       heart.classList.add('heart');
       heart.style.left = Math.random()*window.innerWidth+'px';
-      heart.style.fontSize = (Math.random()*20+15)+'px';
+      heart.style.top = (window.innerHeight - 50) + 'px';
       heart.innerText = ['🖤','💖','💜','❤️'][Math.floor(Math.random()*4)];
-      body.appendChild(heart);
+      document.body.appendChild(heart);
       setTimeout(()=>heart.remove(),3000);
     }
   }
 
-  // Soru butonları
-  const yes1=document.getElementById('yes1');
-  const no1=document.getElementById('no1');
-  const yes2=document.getElementById('yes2');
-  const no2=document.getElementById('no2');
-  const q1=document.getElementById('question1');
-  const q2=document.getElementById('question2');
-  const b1=document.getElementById('buttons1');
-  const b2=document.getElementById('buttons2');
-  const altMesaj=document.getElementById('alt-mesaj');
-  const specialPhoto=document.getElementById('special-photo');
-
-  // Hayır butonlarını mouse'dan uzaklaştır ve basıldığında kaybolsun
-  function moveButton(button) {
-    const maxX = window.innerWidth - button.offsetWidth;
-    const maxY = window.innerHeight - button.offsetHeight;
-    const newX = Math.random() * maxX;
-    const newY = Math.random() * maxY;
-    button.style.position = 'absolute';
-    button.style.left = newX + 'px';
-    button.style.top = newY + 'px';
-  }
-
-  no1.addEventListener('mouseover', () => moveButton(no1));
-  no1.addEventListener('click', () => {
-    no1.style.display = 'none';
-    b1.style.display='none'; q1.style.display='none';
-    b2.style.display='flex'; q2.style.display='block';
-    altMesaj.innerText="Hayır mı? Karanlıkta kaçamazsın! 😈";
-  });
-
-  no2.addEventListener('mouseover', () => moveButton(no2));
-  no2.addEventListener('click', () => {
-    no2.style.display = 'none';
-    altMesaj.innerText="Tamam, belki sonra... 😔";
-  });
-
-  yes1.addEventListener('click',()=>{
-    createHearts(15);
-    b1.style.display='none'; q1.style.display='none';
-    b2.style.display='flex'; q2.style.display='block';
-    altMesaj.innerText="Harika! Şimdi ikinci soruya geçelim...";
-  });
-  yes2.addEventListener('click',()=>{
-    specialPhoto.style.display='block';
-    altMesaj.innerText="cnmmm konyalim";
-    createHearts(20);
-  });
-
-  // YouTube IFrame API
+  // Müzik İşlemleri
   let player;
   function onYouTubeIframeAPIReady(){
     player = new YT.Player('player',{
       height:'0', width:'0',
       videoId:'58YMgJIaT8w',
-      playerVars:{autoplay:1, loop:1, playlist:'58YMgJIaT8w', mute:1},
-      events:{'onReady':onPlayerReady}
+      playerVars:{autoplay:1, loop:1, playlist:'58YMgJIaT8w'},
+      events:{'onReady': (e) => e.target.mute()}
     });
   }
-  function onPlayerReady(event){ event.target.playVideo(); }
 
-  const musicSelect=document.getElementById('music-select');
-  const toggleBtn=document.getElementById('toggle-sound');
-  let isMuted=true;
-
-  musicSelect.addEventListener('change',()=>{
-    const id=musicSelect.value;
-    player.loadVideoById({videoId:id, startSeconds:0});
-    player.mute();
-    toggleBtn.innerText='🔇';
-    isMuted=true;
-  });
-
-  toggleBtn.addEventListener('click',()=>{
-    if(isMuted){ player.unMute(); toggleBtn.innerText='🔊'; }
-    else{ player.mute(); toggleBtn.innerText='🔇'; }
-    isMuted=!isMuted;
+  document.getElementById('toggle-sound').addEventListener('click', function(){
+    if(player.isMuted()){
+      player.unMute();
+      this.innerText = '🔊';
+    } else {
+      player.mute();
+      this.innerText = '🔇';
+    }
   });
 </script>
 </body>
